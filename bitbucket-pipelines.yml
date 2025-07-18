@@ -1,0 +1,15 @@
+# bitbucket-pipelines.yml
+image: docker:24.0.2
+
+pipelines:
+  default:
+    - step:
+        name: Build and Push Docker Image
+        services:
+          - docker
+        caches:
+          - docker
+        script:
+          - echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+          - docker build -t $DOCKER_HUB_USERNAME/java-web-app .
+          - docker push $DOCKER_HUB_USERNAME/java-web-app
