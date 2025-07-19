@@ -13,3 +13,16 @@ pipelines:
           - echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
           - docker build -t $DOCKER_HUB_USERNAME/java-web-app .
           - docker push $DOCKER_HUB_USERNAME/java-web-app
+    - step:
+        name: Deploy to EC2
+        image: atlassian/default-image:2
+        script:
+          - echo "$SSH_KEY" > id_rsa
+          - chmod 600 id_rsa
+          - |
+            ssh -o StrictHostKeyChecking=no -i id_rsa $EC2_USER@$EC2_IP "
+              docker stop sample-web || true
+              docker rm sample-web || true
+              docker pull $DOCKER_USERNAME/java-webapp
+              docker run -d -p 8080:8080 --name sample-web-java-app $DOCKER_USERNAME/java-web-app
+            "
