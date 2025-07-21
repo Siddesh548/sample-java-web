@@ -12,7 +12,7 @@ public class BioController {
                === My Bio ===<br>
                Name: Siddesh G P<br>
                Education: B.E in Computer Science<br>
-               Skills: Java, DevOps, Docker, CI/CD
+               Skills: Java, DevOps, Docker,,Jenkins,Bitbucket, CI/CD,AWS
                """;
     }
 }
